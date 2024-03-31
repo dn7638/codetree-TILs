@@ -56,10 +56,11 @@ def _action(santa, santa_idx, dr, dc):
         santa[temp][0] = r
         santa[temp][1] = c
         if r < 1 or r > N or c < 1 or c > N:
+            graph[r][c] = 0
             santa[temp][3] = False
             continue
 
-        if graph[r][c] != 0 and santa[graph[r][c]][3]:
+        if graph[r][c] != 0:
             _temp = graph[r][c]
             graph[r][c] = temp
             temp = _temp
@@ -171,12 +172,20 @@ for z in range(M):
             # 충돌 발생
             if santa[i][0] == R_r and santa[i][1] == R_c:
                 score[i] += D
-                santa[i][0] += (-dr * D)
-                santa[i][1] += (-dc * D)
-                santa[i][2] = 2
-                if santa_live_check(santa, i):
-                    # 상호작용 구현
+                if santa[i][0] + (-dr * D) < 1 or santa[i][0] + (-dr * D) > N or santa[i][1] + (-dr * D) < 1 or santa[i][1] + (-dr * D) > N:
+                    graph[santa[i][0]][santa[i][1]] = 0
+                    santa[i][0] += (-dr * D)
+                    santa[i][1] += (-dc * D)
+                    santa[i][3] = False
+                    continue
+                else:
+                    santa[i][0] += (-dr * D)
+                    santa[i][1] += (-dc * D)
+                    santa[i][2] = 2
+                    # if santa_live_check(santa, i):
+                        # 상호작용 구현
                     _action(santa, i, -dr, -dc)
+                
 
 
         # print(santa[i])
