@@ -56,11 +56,10 @@ def _action(santa, santa_idx, dr, dc):
         santa[temp][0] = r
         santa[temp][1] = c
         if r < 1 or r > N or c < 1 or c > N:
-            graph[r][c] = 0
             santa[temp][3] = False
             continue
 
-        if graph[r][c] != 0:
+        if graph[r][c] != 0 and santa[graph[r][c]][3]:
             _temp = graph[r][c]
             graph[r][c] = temp
             temp = _temp
@@ -70,7 +69,7 @@ def _action(santa, santa_idx, dr, dc):
 
 
 def distance(a, b, c, d):
-    return ((a - c)**2) + ((b - d)**2)
+    return ((a - c)** 2 + (b - d)**2)
 
 
 def santa_live_check(santa, santa_idx):
@@ -98,7 +97,7 @@ def R_direction(S_r, S_c, R_r, R_c):
         if R_r + dr - S_r == 0 and R_c + dc - S_c == 0:
             temp.append([0, dr, dc])
         else:
-            temp.append([-(R_r + dr - S_r)** 2 - (R_c + dc - S_c)** 2, dr, dc])
+            temp.append([-(R_r + dr - S_r)**2 - (R_c + dc - S_c)** 2, dr, dc])
     return max(temp)[1:3]
     # dr, dc 방향 리턴
 
@@ -178,7 +177,6 @@ for z in range(M):
                 if santa_live_check(santa, i):
                     # 상호작용 구현
                     _action(santa, i, -dr, -dc)
-                
 
 
         # print(santa[i])
