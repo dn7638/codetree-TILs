@@ -59,7 +59,7 @@ def _action(santa, santa_idx, dr, dc):
             santa[temp][3] = False
             continue
 
-        if graph[r][c] != 0:
+        if graph[r][c] != 0 and santa[graph[r][c]][3]:
             _temp = graph[r][c]
             graph[r][c] = temp
             temp = _temp
