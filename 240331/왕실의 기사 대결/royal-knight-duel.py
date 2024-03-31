@@ -42,8 +42,6 @@ stack_set = set()
 stack_move = deque()
 queue = deque()
 
-for i in chess:
-    print(i)
 def knight_graph_draw(_i):
     r, c, h, w = knight_pos_rc[_i][0], knight_pos_rc[_i][1], knight_hw[_i][0], knight_hw[_i][1]
     for i in range(h):
@@ -195,12 +193,6 @@ def check(_i, dir):
 
 
 for _i, d in order_id:
-    print('------')
-    print(f'{_i}번 {d}방향')
-    for x in knight_graph:
-        print(x)
-    print(health)
-    print('------')
     if health[_i] < 1:
         continue
 
