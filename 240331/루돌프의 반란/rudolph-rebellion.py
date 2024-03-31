@@ -70,7 +70,7 @@ def _action(santa, santa_idx, dr, dc):
 
 
 def distance(a, b, c, d):
-    return (pow(a - c, 2) + pow(b - d, 2))
+    return ((a - c)**2) + ((b - d)**2)
 
 
 def santa_live_check(santa, santa_idx):
@@ -98,7 +98,7 @@ def R_direction(S_r, S_c, R_r, R_c):
         if R_r + dr - S_r == 0 and R_c + dc - S_c == 0:
             temp.append([0, dr, dc])
         else:
-            temp.append([-pow(R_r + dr - S_r, 2) - pow(R_c + dc - S_c, 2), dr, dc])
+            temp.append([-(R_r + dr - S_r)** 2 - (R_c + dc - S_c)** 2, dr, dc])
     return max(temp)[1:3]
     # dr, dc 방향 리턴
 
@@ -172,18 +172,11 @@ for z in range(M):
             # 충돌 발생
             if santa[i][0] == R_r and santa[i][1] == R_c:
                 score[i] += D
-                if santa[i][0] + (-dr * D) < 1 or santa[i][0] + (-dr * D) > N or santa[i][1] + (-dr * D) < 1 or santa[i][1] + (-dr * D) > N:
-                    graph[santa[i][0]][santa[i][1]] = 0
-                    santa[i][0] += (-dr * D)
-                    santa[i][1] += (-dc * D)
-                    santa[i][3] = False
-                    continue
-                else:
-                    santa[i][0] += (-dr * D)
-                    santa[i][1] += (-dc * D)
-                    santa[i][2] = 2
-                    # if santa_live_check(santa, i):
-                        # 상호작용 구현
+                santa[i][0] += (-dr * D)
+                santa[i][1] += (-dc * D)
+                santa[i][2] = 2
+                if santa_live_check(santa, i):
+                    # 상호작용 구현
                     _action(santa, i, -dr, -dc)
                 
 
