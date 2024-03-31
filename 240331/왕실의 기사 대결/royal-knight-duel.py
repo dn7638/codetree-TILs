@@ -40,8 +40,10 @@ move = {0: (-1, 0), 1: (0, 1), 2: (1, 0), 3: (0, -1)}
 stack = deque()
 stack_set = set()
 stack_move = deque()
+queue = deque()
 
-
+for i in chess:
+    print(i)
 def knight_graph_draw(_i):
     r, c, h, w = knight_pos_rc[_i][0], knight_pos_rc[_i][1], knight_hw[_i][0], knight_hw[_i][1]
     for i in range(h):
@@ -70,12 +72,13 @@ for i in range(Q):
 
 
 def check(_i, dir):
-    flag = True
     stack.append(_i)
     stack_set.add(_i)
-    while flag:
-        flag = False
-        r, c, h, w = knight_pos_rc[stack[-1]][0], knight_pos_rc[stack[-1]][1], knight_hw[stack[-1]][0], knight_hw[stack[-1]][1]
+    queue.append(_i)
+    while queue:
+        temp = queue.popleft()
+
+        r, c, h, w = knight_pos_rc[temp][0], knight_pos_rc[temp][1], knight_hw[temp][0], knight_hw[temp][1]
         if dir == 0:
             dr, dc = -1, 0
             # 위 -1, 0
@@ -87,6 +90,7 @@ def check(_i, dir):
                     stack.clear()
                     stack_set.clear()
                     stack_move.clear()
+                    queue.clear()
                     return False
                     # 움직임은 없던걸로
                 # 다음칸에 기사가 있으면
@@ -97,12 +101,14 @@ def check(_i, dir):
                         stack.append(next_i)
                         stack_set.add(next_i)
                         stack_move.append(next_i)
-                        flag = True
+                        queue.append(next_i)
 
         # {0: (-1, 0), 1: (0, 1), 2: (1, 0), 3: (0, -1)}
         elif dir == 1:
             dr, dc = 0, 1
             # 오른쪽 0, 1
+
+
 
             # 벽이 아니면
             for i in range(h):
@@ -111,6 +117,7 @@ def check(_i, dir):
                     stack.clear()
                     stack_set.clear()
                     stack_move.clear()
+                    queue.clear()
                     return False
                     # 움직임은 없던걸로
 
@@ -122,7 +129,7 @@ def check(_i, dir):
                         stack.append(next_i)
                         stack_set.add(next_i)
                         stack_move.append(next_i)
-                        flag = True
+                        queue.append(next_i)
 
         # {0: (-1, 0), 1: (0, 1), 2: (1, 0), 3: (0, -1)}
         elif dir == 2:
@@ -135,6 +142,7 @@ def check(_i, dir):
                     stack.clear()
                     stack_set.clear()
                     stack_move.clear()
+                    queue.clear()
                     return False
                     # 움직임은 없던걸로
 
@@ -146,7 +154,7 @@ def check(_i, dir):
                         stack.append(next_i)
                         stack_set.add(next_i)
                         stack_move.append(next_i)
-                        flag = True
+                        queue.append(next_i)
 
         # {0: (-1, 0), 1: (0, 1), 2: (1, 0), 3: (0, -1)}
         elif dir == 3:
@@ -160,6 +168,7 @@ def check(_i, dir):
                     stack.clear()
                     stack_set.clear()
                     stack_move.clear()
+                    queue.clear()
                     return False
                     # 움직임은 없던걸로
 
@@ -171,7 +180,8 @@ def check(_i, dir):
                         stack.append(next_i)
                         stack_set.add(next_i)
                         stack_move.append(next_i)
-                        flag = True
+                        queue.append(next_i)
+
     while stack:
         _i = stack.pop()
         stack_set.remove(_i)
@@ -185,6 +195,12 @@ def check(_i, dir):
 
 
 for _i, d in order_id:
+    print('------')
+    print(f'{_i}번 {d}방향')
+    for x in knight_graph:
+        print(x)
+    print(health)
+    print('------')
     if health[_i] < 1:
         continue
 
