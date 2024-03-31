@@ -104,17 +104,19 @@ def R_direction(S_r, S_c, R_r, R_c):
 
 def S_direction(santa, i, R_r, R_c):
     S_r, S_c = santa[i][:2]
-    temp = []
+    minDist = distance(S_r, S_c, R_r, R_c)
+    moveDir = -1, 0, 0
     for idx, move in enumerate(moveS):
         dr, dc = move[:]
         if 1 <= S_r + dr <= N and 1 <= S_c + dc <= N:
             if graph[S_r + dr][S_c + dc] == 0:
                 dis = distance(S_r + dr, S_c + dc, R_r, R_c)
-                if distance(S_r, S_c, R_r, R_c) > dis:
-                    temp.append([-dis, -idx, dr, dc])
-    if temp:
-        a, b = max(temp)[2:4]
-        return True, a, b
+                if dis < minDist:
+                    minDist = dis
+                    moveDir = True, dr, dc
+                
+    if moveDir[0]:
+        return True, moveDir[1], moveDir[2]
     else:
         return False, 0, 0
 
