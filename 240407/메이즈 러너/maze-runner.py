@@ -92,35 +92,7 @@ def player_move(i):  # i = 플레이어 넘버
                 number_of_players[0] -= 1
             break
 
-
-#
-# 1,1 1,2 1,3 1,4 1,5
-# 2,1 2,2 2,3 2,4 2,5
-# 3,1 3,2 3,3 3,4 3,5
-# 4,1 4,2 4,3 4,4 4,5
-# 5,1 5,2 5,3 5,4 5,5
-#
-# 0,0 0,1 0,2 0,3 0,4
-# 1,0 1,1 1,2 1,3 1,4
-
-# graph_temp1 = [['a', 'a', 'b', 'b'],
-#                ['a', 'a', 'e', 'f'],  # e 0,1
-#                ['d', 'd', 'h', 'g'],  # g 2,3
-#                ['d', 'd', 'c', 'c']]
-#
-# graph_temp2 = [[0, 0, 0, 0],
-#                [0, 0, 0, 0],
-#                [0, 0, 0, 0],
-#                [0, 0, 0, 0]]
-
-
 def rotate(start_x, start_y, last_x, last_y):
-    # 디버깅
-    # 1,2
-    # 2,3
-    # print('사각형')
-    # print(start_x, start_y, last_x, last_y)
-    # print(f'출구 : {exit_location}')
 
     k = last_x - start_x + 1  # 2
     changed = False
@@ -146,20 +118,12 @@ def rotate(start_x, start_y, last_x, last_y):
 
 
 for game_iter in range(K):
-    # # # # # 디버깅
-    # print(f'게임 진행 초 : {game_iter}')
-    # Print(graph)
-    # print(player_exist)
-
     # 모든 참가자 동시 이동
     for i, player in enumerate(players):
         # 탈출한 플레이어는 고려하지 않음
         if not player_exist[i]:
             continue
         player_move(i)
-    # # # # 디버깅
-    # print('이동후')
-    # Print(graph)
 
     # 이동 이후 모든 플레이어가 다 나갔다면...?
     # 즉시 종료
@@ -230,37 +194,7 @@ for game_iter in range(K):
                     start_x, start_y = cur_start_x, cur_start_y
                     last_x, last_y = cur_last_x, cur_last_y
 
-    # 디버깅
-    if next_x > N or next_y > N:
-        print('정사각형 선택 오류 발생')
-    # 디버깅
-
-    # 이제 선택된 정사각형을 바탕으로 회전해야함..!
-    # 세로 길이가 최대이면
-    # start_x, last_x = min(next_x, exit_location[0]), max(next_x, exit_location[0])
-    # start_y, last_y = min(next_y, exit_location[1]), max(next_y, exit_location[1])
-    # if (last_x - start_x) == next_distance:
-    #     # x좌표는 놔두고 적절한 y좌표만 확인
-    #     while last_y - start_y != next_distance:
-    #         if start_y > 1:
-    #             start_y -= 1
-    #         else:
-    #             last_y += 1
-    #
-    # elif (last_y - start_y) == next_distance:
-    #     # x좌표는 놔두고 적절한 y좌표만 확인
-    #     while last_x - start_x != next_distance:
-    #         if start_x > 1:
-    #             start_x -= 1
-    #         else:
-    #             last_x += 1
-
     rotate(start_x, start_y, last_x, last_y)
-    # # #디버깅
-    # print('회전후')
-    # Print(graph)
-    # Print(players)
-    # print(f'회전후 출구 : {exit_location}')
-    # print('===============')
+
 print(cnt[0])
 print(' '.join(map(str, exit_location)))
