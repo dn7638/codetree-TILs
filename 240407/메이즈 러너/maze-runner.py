@@ -146,7 +146,7 @@ def rotate(start_x, start_y, last_x, last_y):
 
 
 for game_iter in range(K):
-    # # # # 디버깅
+    # # # # # 디버깅
     # print(f'게임 진행 초 : {game_iter}')
     # Print(graph)
     # print(player_exist)
@@ -157,7 +157,7 @@ for game_iter in range(K):
         if not player_exist[i]:
             continue
         player_move(i)
-    # # # 디버깅
+    # # # # 디버깅
     # print('이동후')
     # Print(graph)
 
@@ -221,9 +221,14 @@ for game_iter in range(K):
                         cur_start_x -= 1
                     else:
                         cur_last_x += 1
-            if cur_start_x <= start_x and cur_start_y <= start_y:
+            # 1,2 2,1 -> 1,2
+            if cur_start_x < start_x:
                 start_x, start_y = cur_start_x, cur_start_y
                 last_x, last_y = cur_last_x, cur_last_y
+            elif cur_start_x == start_x:
+                if cur_start_y < start_y:
+                    start_x, start_y = cur_start_x, cur_start_y
+                    last_x, last_y = cur_last_x, cur_last_y
 
     # 디버깅
     if next_x > N or next_y > N:
