@@ -78,7 +78,6 @@ dir_flag = 0
 move_cnt = 0
 answer = 0
 for turn in range(1, k + 1):
-
     # 디버깅용
     # graph_domang = [[-1 for _ in range(n + 1)] for _ in range(n + 1)]
     # for idx, do in enumerate(domang):
@@ -131,9 +130,11 @@ for turn in range(1, k + 1):
         # 1,1 위치면
         if sulae[0] == 1 and sulae[1] == 1:
             dir_flag = 2
+            sulae_outside[0] = False
         # 방향 전환하는 곳이면 방향 전환
         elif flag[move_cnt]:
             dir_flag = (dir_flag + 1) % 4
+            
     # 안쪽으로 이동중
     else:
         dx, dy = sulae_direction[dir_flag]
@@ -144,31 +145,33 @@ for turn in range(1, k + 1):
         # 중앙 위치면
         if sulae[0] == (n // 2 + 1) and sulae[1] == (n // 2 + 1):
             dir_flag = 0
+            sulae_outside[0] = True
         # 방향 전환하는 곳이면 방향 전환
         elif flag[move_cnt]:
             dir_flag = (dir_flag - 1) % 4
+            
 
     # 술래가 바라보는 방향
     look_x, look_y = sulae_direction[dir_flag]
 
     # 방향기준 3명 확인
-
+    caught_num = 0
     for num in range(3):
         check_x, check_y = sulae[0] + look_x * num, sulae[1] + look_y * num
         # 바깥이면 그만
         if not innate(check_x, check_y):
             break
 
-        caught_num = 0
+        
         for idx, do in enumerate(domang):
             x, y, d = do[:]
             if x == 0 and y == 0:
                 continue
             # 사람 한명 잡으면 / graph_tree[] 가 1이면 나무가 있음
-            if x == check_x and y == check_y and graph_tree[x][y] == 0:
+            if x == check_x and y == check_y and graph_tree[check_x][check_y] == 0:
                 domang[idx][0], domang[idx][1] = 0, 0
                 caught_num += 1
-        answer += (caught_num * turn)
+    answer += (caught_num * turn)
 
 print(answer)
             # 디버깅용
