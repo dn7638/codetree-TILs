@@ -42,30 +42,13 @@ sulae = [n // 2 + 1, n // 2 + 1]
 sulae_direction = {0: (-1, 0), 1: (0, 1), 2: (1, 0), 3: (0, -1)}
 sulae_outside = [True]
 
-graph_sulae = [[0 for _ in range(n + 1)] for _ in range(n + 1)]
-graph_domang = [[-1 for _ in range(n + 1)] for _ in range(n + 1)]
 graph_tree = [[0 for _ in range(n + 1)] for _ in range(n + 1)]
-
-# 디버깅용
-for idx, do in enumerate(domang):
-    x, y, d = do[:]
-    graph_domang[x][y] = idx
 
 for x, y in trees:
     graph_tree[x][y] = 1
 
-graph_sulae[sulae[0]][sulae[1]] = 1
-
 # 3가지 그래프 완성
 domang_move = {1: (0, 1), 2: (1, 0), -1: (0, -1), -2: (-1, 0)}
-
-
-def Print(a):
-    for i in range(len(a)):
-        for j in range(len(a[0])):
-            print(f'[{a[i][j]}]', end='')
-        print()
-
 
 def innate(x, y):
     if 1 <= x <= n and 1 <= y <= n:
@@ -78,14 +61,6 @@ dir_flag = 0
 move_cnt = 0
 answer = 0
 for turn in range(1, k + 1):
-    # 디버깅용
-    # graph_domang = [[-1 for _ in range(n + 1)] for _ in range(n + 1)]
-    # for idx, do in enumerate(domang):
-    #     x, y, d = do[:]
-    #     graph_domang[x][y] = idx
-    # print()
-    # Print(graph_domang)
-
     # 도망자 움직임
     # x, y, d
     # d : 1 -> 좌우 -> 1 : 우 / -1 : 좌
@@ -172,12 +147,4 @@ for turn in range(1, k + 1):
                 domang[idx][0], domang[idx][1] = 0, 0
                 caught_num += 1
     answer += (caught_num * turn)
-
 print(answer)
-            # 디버깅용
-# print()
-# graph_domang = [[-1 for _ in range(n + 1)] for _ in range(n + 1)]
-# for idx, do in enumerate(domang):
-#     x, y, d = do[:]
-#     graph_domang[x][y] = idx
-# Print(graph_domang)
