@@ -93,7 +93,7 @@ move = [(0,1),(1,0),(0,-1),(-1,0)]
 def raser_func(src_x, src_y, dest_x, dest_y):
     for i in range(N):
         for j in range(M):
-            visited[i][j] = True
+            visited[i][j] = False
 
     temp_route = []
     queue = deque()
@@ -101,20 +101,19 @@ def raser_func(src_x, src_y, dest_x, dest_y):
 
     while queue:
         (cur_x, cur_y, rt) = queue.popleft()
-        print(cur_x, cur_y, rt)
 
         if cur_x == dest_x and cur_y == dest_y:
-            print(f'경로{rt}')
             for a, b in rt:
                 attack_stack.append((a,b))
             return True
 
         for dx, dy in move:
             next_x, next_y = (cur_x + dx) % N, (cur_y + dy) % M
-            if not visited and graph[next_x][next_y] > 0:
-                queue.append((next_x, next_y, rt[:].append((next_x, next_y))))
-                print(queue)
-                visited[next_x][next_y] = False
+            if not visited[next_x][next_y] and graph[next_x][next_y] > 0:
+                temp = rt[:]
+                temp.append((next_x,next_y))
+                queue.append((next_x, next_y, temp))
+                visited[next_x][next_y] = True
                 temp_route.append((next_x, next_y))
 
     return False
@@ -151,9 +150,10 @@ for turn_num in range(K):
     # 공격 종류 설정
     is_raser = raser_func(atk_tower_x, atk_tower_y, tar_tower_x, tar_tower_y)
     if is_raser:
-        graph[attack_stack[-1][0]][attack_stack[-1][0]] -= atk_damage
-        if graph[attack_stack[-1][0]][attack_stack[-1][0]] < 0:
-            graph[attack_stack[-1][0]][attack_stack[-1][0]] = 0
+        graph[tar_tower_x][tar_tower_y] -= atk_damage
+
+        if graph[tar_tower_x][tar_tower_y] < 0:
+            graph[tar_tower_x][tar_tower_y] = 0
 
         for i in range(1, len(attack_stack)-1):
             x, y = attack_stack[i][0], attack_stack[i][1]
@@ -183,17 +183,7 @@ for turn_num in range(K):
             continue
         graph[i][j] -= 1
 
-    print(f'공격자 {atk_tower_x}, {atk_tower_y}')
-    print(f'공격대상 {tar_tower_x}, {tar_tower_y}')
-    print(f'데미지 {atk_damage}')
-    
-    # 그래프
-    for i in graph:
-        for j in i:
-            print(f'[{j}]', end='')
-        print()
-    
-    
+
 
 temp = 0
 for i in range(M):
