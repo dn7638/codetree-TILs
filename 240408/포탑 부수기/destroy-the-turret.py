@@ -97,21 +97,23 @@ def raser_func(src_x, src_y, dest_x, dest_y):
 
     temp_route = []
     queue = deque()
-    queue.append((src_x,src_y))
+    queue.append((src_x,src_y, []))
 
     while queue:
-        (cur_x, cur_y) = queue.popleft()
-        
+        (cur_x, cur_y, rt) = queue.popleft()
+        print(cur_x, cur_y, rt)
 
         if cur_x == dest_x and cur_y == dest_y:
-            for a, b in temp_route:
+            print(f'경로{rt}')
+            for a, b in rt:
                 attack_stack.append((a,b))
             return True
 
         for dx, dy in move:
             next_x, next_y = (cur_x + dx) % N, (cur_y + dy) % M
             if not visited and graph[next_x][next_y] > 0:
-                queue.append((next_x, next_y))
+                queue.append((next_x, next_y, rt[:].append((next_x, next_y))))
+                print(queue)
                 visited[next_x][next_y] = False
                 temp_route.append((next_x, next_y))
 
@@ -124,12 +126,16 @@ move_around = [[-1,-1],[-1,0],[-1,1],[0,-1],[0,0],[0,1],[1,-1],[1,0],[1,1]]
 
 def bomb_func(src_x, src_y, dest_x, dest_y, damage):
     graph[dest_x][dest_y] -= damage
+    if graph[dest_x][dest_y] < 0:
+        graph[dest_x][dest_y] = 0
     attack_stack.append((dest_x,dest_y))
     for dx, dy in move_around:
         next_x, next_y = (src_x+dx)%N, (src_y+dy)%M
         if next_x == src_x and next_y == src_y:
             continue
         graph[next_x][next_y] -= (damage//2)
+        if graph[next_x][next_y] < 0:
+            graph[next_x][next_y] = 0
         attack_stack.append((next_x,next_y))
 
 for turn_num in range(K):
@@ -176,6 +182,16 @@ for turn_num in range(K):
         if graph[i][j] <= 0:
             continue
         graph[i][j] -= 1
+
+    print(f'공격자 {atk_tower_x}, {atk_tower_y}')
+    print(f'공격대상 {tar_tower_x}, {tar_tower_y}')
+    print(f'데미지 {atk_damage}')
+    
+    # 그래프
+    for i in graph:
+        for j in i:
+            print(f'[{j}]', end='')
+        print()
     
     
 
@@ -184,6 +200,5 @@ for i in range(M):
     for j in range(N):
         if temp < graph[i][j]:
             temp = graph[i][j]
-            if temp == 18:
-                print(i,j)
+
 print(temp)
