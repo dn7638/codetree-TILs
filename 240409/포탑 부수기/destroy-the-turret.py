@@ -23,14 +23,13 @@
 ####
 
 ### 포탑 정비
-
 import sys
 from collections import deque
 
 N, M, K = map(int, sys.stdin.readline().split(' '))
 visited = [[False for _ in range(M)]for _ in range(N)] 
 
-graph = [list(map(int, sys.stdin.readline().split(' '))) for _ in range(M)]
+graph = [list(map(int, sys.stdin.readline().split(' '))) for _ in range(N)]
 recent = [[ 0 for _ in range(M)]for _ in range(N)]
 attack_stack = []
 
@@ -42,16 +41,16 @@ def attack_func(idx):
             if cur_damage == 0:
                 continue
             if cur_damage < next_damage:
-                next_damage, next_sum, next_x, next_y = cur_damage, cur_sum, cur_x, cur_y
+                next_damage, next_recent, next_sum, next_x, next_y = cur_damage, cur_recent, cur_sum, cur_x, cur_y
             elif cur_damage == next_damage:
                 if cur_recent > next_recent:
-                    next_damage, next_sum, next_x, next_y = cur_damage, cur_sum, cur_x, cur_y
+                    next_damage, next_recent, next_sum, next_x, next_y = cur_damage, cur_recent, cur_sum, cur_x, cur_y
                 elif cur_recent == next_recent:
                     if cur_sum > next_sum:
-                        next_damage, next_sum, next_x, next_y = cur_damage, cur_sum, cur_x, cur_y
+                        next_damage, next_recent, next_sum, next_x, next_y = cur_damage, cur_recent, cur_sum, cur_x, cur_y
                     elif cur_sum == next_sum:
-                        if cur_x > next_x:
-                            next_damage, next_sum, next_x, next_y = cur_damage, cur_sum, cur_x, cur_y
+                        if cur_y > next_y:
+                            next_damage, next_recent, next_sum, next_x, next_y = cur_damage, cur_recent, cur_sum, cur_x, cur_y
     
     graph[next_x][next_y] += (N + M)
     recent[next_x][next_y] = idx
@@ -74,16 +73,16 @@ def target_func(atk_x, atk_y):
             if cur_damage == 0:
                 continue
             if cur_damage > next_damage:
-                next_damage, next_sum, next_x, next_y = cur_damage, cur_sum, cur_x, cur_y
+                next_damage, next_recent, next_sum, next_x, next_y = cur_damage, cur_recent, cur_sum, cur_x, cur_y
             elif cur_damage == next_damage:
                 if cur_recent < next_recent:
-                    next_damage, next_sum, next_x, next_y = cur_damage, cur_sum, cur_x, cur_y
+                    next_damage, next_recent, next_sum, next_x, next_y = cur_damage, cur_recent, cur_sum, cur_x, cur_y
                 elif cur_recent == next_recent:
                     if cur_sum < next_sum:
-                        next_damage, next_sum, next_x, next_y = cur_damage, cur_sum, cur_x, cur_y
+                        next_damage, next_recent, next_sum, next_x, next_y = cur_damage, cur_recent, cur_sum, cur_x, cur_y
                     elif cur_sum == next_sum:
-                        if cur_x < next_x:
-                            next_damage, next_sum, next_x, next_y = cur_damage, cur_sum, cur_x, cur_y
+                        if cur_y < next_y:
+                            next_damage, next_recent, next_sum, next_x, next_y = cur_damage, cur_recent, cur_sum, cur_x, cur_y
     
     return (next_x, next_y)
 
@@ -128,7 +127,7 @@ def bomb_func(src_x, src_y, dest_x, dest_y, damage):
         graph[dest_x][dest_y] = 0
     
     for dx, dy in move_around:
-        next_x, next_y = (src_x+dx)%N, (src_y+dy)%M
+        next_x, next_y = (dest_x+dx)%N, (dest_y+dy)%M
         if next_x == src_x and next_y == src_y:
             continue
         graph[next_x][next_y] -= (damage//2)
@@ -137,7 +136,7 @@ def bomb_func(src_x, src_y, dest_x, dest_y, damage):
         attack_stack.append((next_x,next_y))
     attack_stack.append((dest_x,dest_y))
 
-for turn_num in range(K):
+for turn_num in range(1,K+1):
     attack_stack.clear()
 
     # 공격자 선정
@@ -149,8 +148,10 @@ for turn_num in range(K):
 
     # 공격 종류 설정
     is_raser = raser_func(atk_tower_x, atk_tower_y, tar_tower_x, tar_tower_y)
+
     if is_raser:
         graph[tar_tower_x][tar_tower_y] -= atk_damage
+
         if graph[tar_tower_x][tar_tower_y] < 0:
             graph[tar_tower_x][tar_tower_y] = 0
 
@@ -163,16 +164,16 @@ for turn_num in range(K):
         bomb_func(atk_tower_x, atk_tower_y, tar_tower_x, tar_tower_y, atk_damage)
 
     temp = 0
-    for i in range(M):
-        for j in range(N):
+    for i in range(N):
+        for j in range(M):
             if graph[i][j] > 0:
                 temp += 1
     if temp == 1:
         break
 
     # 정비
-    for i in range(M):
-        for j in range(N):
+    for i in range(N):
+        for j in range(M):
             if graph[i][j] <= 0:
                 continue
             graph[i][j] += 1
@@ -181,11 +182,10 @@ for turn_num in range(K):
         if graph[i][j] <= 0:
             continue
         graph[i][j] -= 1
-
     
 temp = 0
-for i in range(M):
-    for j in range(N):
+for i in range(N):
+    for j in range(M):
         if temp < graph[i][j]:
             temp = graph[i][j]
 
