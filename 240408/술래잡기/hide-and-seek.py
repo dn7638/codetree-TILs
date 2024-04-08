@@ -111,7 +111,7 @@ for turn in range(1, k + 1):
         # 격자 외부
         else:
             d = -d
-            domang[idx][2] *= d
+            domang[idx][2] = d
             (dx, dy) = domang_move[d]
             next_x, next_y = x + dx, y + dy
             if next_x == sulae[0] and next_y == sulae[1]:
