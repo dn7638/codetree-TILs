@@ -82,6 +82,7 @@ while True:
             if cur_distance > next_distance and graph[next_x][next_y] != -1:
                 location[i][0], location[i][1] = next_x, next_y
                 break
+        
     # 이동 완료 후 체크
     for i in range(m):
         if status[i] != 1:
