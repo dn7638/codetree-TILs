@@ -26,16 +26,13 @@ remain_num = [m]
 # 2 : 바깥 , 1 : 내부 , 0 : 도착
 status = [2 for _ in range(m)]
 location = [[0, 0] for _ in range(m)]
-
 move = [[-1, 0], [0, -1], [0, 1], [1, 0]]
-
 
 def innate(x, y):
     if 1 <= x <= n and 1 <= y <= n:
         return True
     else:
         return False
-
 
 def dfs(t):
     visited = [[False for _ in range(n + 1)]for _ in range(n+1)]
@@ -64,6 +61,26 @@ def dfs(t):
                     queue.append((next_x, next_y))
                     visited[next_x][next_y] = True
 
+_move = [[-1,0], [0,-1], [0,1], [1,0]]
+def bfs(dest_x, dest_y, store_x, store_y):
+    visited = [[False for _ in range(n + 1)] for _ in range(n + 1)]
+    # graph 에서
+    queue = deque()
+
+    queue.append((store_x, store_y))
+
+    while queue:
+        cur_x, cur_y = queue.popleft()
+        for dx, dy in _move:
+            next_x, next_y = cur_x + dx, cur_y + dy
+            if next_x == dest_x and next_y == dest_y:
+                return cur_x, cur_y
+            # 범위 먼저
+            if innate(next_x, next_y):
+                # 이동 가능한 곳이며 방문하지 않았다면
+                if graph[next_x][next_y] != -1 and not visited[next_x][next_y]:
+                    queue.append((next_x, next_y))
+                    visited[next_x][next_y] = True
 
 t = 0  # time
 while True:
@@ -75,13 +92,9 @@ while True:
             continue
         cur_x, cur_y = location[i][0], location[i][1]
         store_x, store_y = store[i][0], store[i][1]
-        cur_distance = abs(cur_x - store_x) + abs(cur_y - store_y)
-        for dx, dy in move:
-            next_x, next_y = cur_x + dx, cur_y + dy
-            next_distance = abs(next_x - store_x) + abs(next_y - store_y)
-            if cur_distance > next_distance and graph[next_x][next_y] != -1:
-                location[i][0], location[i][1] = next_x, next_y
-                break
+
+        next_x, next_y = bfs(cur_x, cur_y, store_x, store_y)
+        location[i][0], location[i][1] = next_x, next_y
         
     # 이동 완료 후 체크
     for i in range(m):
@@ -101,10 +114,6 @@ while True:
         dfs(t)  # 가고싶은 편읮머과 가장 가까이 있는 베이스 캠프
 
     t += 1
-    # for a in location:
-    #     print(a)
-    # print()
-
     if remain_num[0] == 0:
         break
 
