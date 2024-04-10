@@ -52,16 +52,12 @@ def dfs(t):
         cur_x, cur_y, depth = queue.popleft()
 
         if depth > min_depth:
-            candidate.sort()
-            status[t] = 1
-            cur_x, cur_y = candidate[0][:]
-            location[t][0], location[t][1] = cur_x, cur_y
-            graph[cur_x][cur_y] = -1
             break
 
         if graph[cur_x][cur_y] == 1:
             min_depth = min(depth, min_depth)
             candidate.append([cur_x, cur_y])
+            continue
 
         for dx, dy in move:
             next_x, next_y = cur_x + dx, cur_y + dy
@@ -71,6 +67,12 @@ def dfs(t):
                 if graph[next_x][next_y] != -1 and not visited[next_x][next_y]:
                     queue.append((next_x, next_y, depth + 1))
                     visited[next_x][next_y] = True
+
+    candidate.sort()
+    status[t] = 1
+    cur_x, cur_y = candidate[0][:]
+    location[t][0], location[t][1] = cur_x, cur_y
+    graph[cur_x][cur_y] = -1
 
 
 _move = [[-1, 0], [0, -1], [0, 1], [1, 0]]
@@ -95,6 +97,7 @@ def bfs(dest_x, dest_y, store_x, store_y):
                 if graph[next_x][next_y] != -1 and not visited[next_x][next_y]:
                     queue.append((next_x, next_y))
                     visited[next_x][next_y] = True
+
 
 t = 0  # time
 while True:
@@ -124,9 +127,10 @@ while True:
     # 3번
     # 베이스 캠프 가야함
     if t < m:
-        dfs(t)  # 가고싶은 편의전과 가장 가까이 있는 베이스 캠프
+        dfs(t)  # 가고싶은 편읮머과 가장 가까이 있는 베이스 캠프
 
     t += 1
     if remain_num[0] == 0:
         break
+
 print(t)
