@@ -19,7 +19,7 @@ graph[0].extend([0 for _ in range(n)])
 for i in range(1, n + 1):
     graph[i].extend(list(map(int, sys.stdin.readline().split(' '))))
 
-store = [list(map(int, sys.stdin.readline().split(' '))) for _ in range(m)]
+store = [list(map(int, sys.stdin.readline().rstrip().split(' '))) for _ in range(m)]
 # 0 이면 도착, 1이면 안도착 -> sum 가능
 remain_num = [m]
 
