@@ -61,7 +61,7 @@ def get_gun(i, x, y):
             if max_score < gun_score:
                 max_score = gun_score
                 max_idx = idx
-
+    guns[max_idx][1], guns[max_idx][2] = x, y
     gun_of_player[i] = max_idx
     return max_idx, max_score
         
@@ -73,6 +73,7 @@ def innate(r, c):
         return False
 
 for z in range(k):
+    print(point)
 
     for idx, player in enumerate(players):
         x, y, d, s = player
@@ -125,7 +126,8 @@ for z in range(k):
             # 싸운 이후
             x, y = next_x, next_y
             loser_gun = gun_of_player[loser]
-            guns[loser_gun][0], guns[loser_gun][1] = x, y
+            if loser_gun != 0:
+                guns[loser_gun][0], guns[loser_gun][1] = x, y
             gun_of_player[loser] = 0
             player_graph[x][y] = winner
 
