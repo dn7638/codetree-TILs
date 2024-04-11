@@ -45,14 +45,20 @@ for i in range(n+1):
 # i번 사람이, x,y로 이동했을때 총을 얻는 함수
 def get_gun(i, x, y):
     # 총이 없는 경우
+    max_score = 0
+    max_idx = 0
     cur_gun = gun_of_player[i]
     if cur_gun != 0:
         guns[cur_gun][0] = x
         guns[cur_gun][1] = y
+        max_idx, max_score = cur_gun, guns[cur_gun][2]
+    
 
     # 가장 큰 총 구하기
-    max_score = 0
-    max_idx = 0
+    
+
+
+
     for idx, gun in enumerate(guns):
         if idx == 0:
             continue
@@ -61,7 +67,7 @@ def get_gun(i, x, y):
             if max_score < gun_score:
                 max_score = gun_score
                 max_idx = idx
-    guns[max_idx][1], guns[max_idx][2] = x, y
+    guns[max_idx][0], guns[max_idx][1] = x, y
     gun_of_player[i] = max_idx
     return max_idx, max_score
         
@@ -73,7 +79,6 @@ def innate(r, c):
         return False
 
 for z in range(k):
-
     for idx, player in enumerate(players):
         x, y, d, s = player
         dx, dy = direction[d]
@@ -87,20 +92,21 @@ for z in range(k):
         
         players[idx][0], players[idx][1] = next_x, next_y
         player_graph[x][y] = -1
+        guns[gun_of_player[idx]][0], guns[gun_of_player[idx]][1] = next_x, next_y
         if player_graph[next_x][next_y] == -1:
             # 해당 칸에 플레이어가 없으면
             
             player_graph[next_x][next_y] = idx
             get_gun(idx, next_x, next_y)
-    
 
 
         else:
             #있으면 싸우기
             # idx플레이어와 origin플레이어가 싸움
+
             
             origin = player_graph[next_x][next_y]
-            origin_d, origin_s = players[origin][2:]
+            origin_d, origin_s = players[origin][2], players[origin][3]
             origin_gun_score = guns[gun_of_player[origin]][2]
             idx_gun_score = guns[gun_of_player[idx]][2]
 
@@ -127,6 +133,7 @@ for z in range(k):
             loser_gun = gun_of_player[loser]
             if loser_gun != 0:
                 guns[loser_gun][0], guns[loser_gun][1] = x, y
+            
             gun_of_player[loser] = 0
             player_graph[x][y] = winner
 
@@ -144,8 +151,6 @@ for z in range(k):
                         break
             
             get_gun(winner, x, y)
-
-
 
 for i in point:
     print(i, end=' ')
