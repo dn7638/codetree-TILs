@@ -73,7 +73,6 @@ def innate(r, c):
         return False
 
 for z in range(k):
-    print(point)
 
     for idx, player in enumerate(players):
         x, y, d, s = player
