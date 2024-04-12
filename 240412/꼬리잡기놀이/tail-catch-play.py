@@ -57,8 +57,10 @@ def check_fun(x, y):
     tail_x, tail_y = 0,0
     if base[x][y] == 1 :
         head_x, head_y = cur_x, cur_y
+        flag = 1
     if base[x][y] == 3 :
         tail_x, tail_y = cur_x, cur_y
+        flag = 2
     for dx, dy in move:
             next_x, next_y = cur_x + dx, cur_y + dy
             if not innate(next_x,next_y):
@@ -108,7 +110,10 @@ def check_fun(x, y):
         base[head_x][head_y] = 3
         base[tail_x][tail_y] = 1
         heads[head_idx][0], heads[head_idx][1] = tail_x, tail_y
-
+    #print(f'length : {length}')
+    #print(f'result : {result}')
+    if flag == 1:
+        return 1
     return result**2
 
 
@@ -208,7 +213,7 @@ for rnd in range(1,k+1):
             if base[x][start_y] != 0:
                 score += check_fun(x, start_y)
                 break
-        
+
 print(score)
 
     
