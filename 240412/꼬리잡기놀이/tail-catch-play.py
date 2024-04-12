@@ -15,7 +15,7 @@ n, m, k = map(int, sys.stdin.readline().split(' '))
 base = [[0] for _ in range(n+1)]
 base[0].extend([0 for _ in range(n)])
 for i in range(1, n+1):
-    base[i].extend(list(map(int, sys.stdin.readline().split(' '))))
+    base[i].extend(list(map(int, sys.stdin.readline().rstrip().split(' '))))
 
 heads = []  
 for i in range(1, n+1):
