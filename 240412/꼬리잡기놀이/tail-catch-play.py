@@ -45,6 +45,7 @@ move = [[-1,0],[0,1],[1,0],[0,-1]]
 # 2   4
 # 3 4 4
 
+
 def check_fun(x, y):
     # x, y에서 1을 찾아나가야함
  
@@ -107,27 +108,19 @@ def check_fun(x, y):
                 head_idx = idx
                 break
 
-        base[head_x][head_y] = 3
-        base[tail_x][tail_y] = 1
-        heads[head_idx][0], heads[head_idx][1] = tail_x, tail_y
+    base[head_x][head_y] = 3
+    base[tail_x][tail_y] = 1
+    heads[head_idx][0], heads[head_idx][1] = tail_x, tail_y
     #print(f'length : {length}')
     #print(f'result : {result}')
     if flag == 1:
         return 1
     return result**2
 
-
-                
-
-
-
-
-
-
-
 score = 0
 # 1. 이동
 for rnd in range(1,k+1):
+
     for i in range(m):
         cur_x, cur_y = heads[i][:]
         thereisfour = False
@@ -151,7 +144,7 @@ for rnd in range(1,k+1):
                         continue
                     if base[next_x][next_y] == 3:
                         end_x, end_y = next_x, next_y
-                        thereisfour = True
+                        thereisfour = False
                     elif base[next_x][next_y] == 2:
                         behind_x, behind_y = next_x, next_y
 
@@ -159,8 +152,8 @@ for rnd in range(1,k+1):
         base[end_x][end_y] = base[cur_x][cur_y]
         heads[i][0], heads[i][1] = end_x, end_y
         
+    
         while True:
-            
             x_tomove, y_tomove = cur_x, cur_y
             cur_x, cur_y = behind_x, behind_y
 
@@ -170,7 +163,7 @@ for rnd in range(1,k+1):
                         continue
                 if next_x == x_tomove and next_y == y_tomove:
                     continue
-                if base[next_x][next_y] != 0 or (next_x == end_x and next_y == end_y):
+                if base[next_x][next_y] != 0 :
                     behind_x, behind_y = next_x, next_y
             
             base[x_tomove][y_tomove] = base[cur_x][cur_y]
@@ -213,8 +206,15 @@ for rnd in range(1,k+1):
             if base[x][start_y] != 0 and base[x][start_y] != 4:
                 score += check_fun(x, start_y)
                 break
+
+
 print(score)
 
+# 3 1
+#   2
+
+# 1 3 
+#   2
     
     
 
@@ -231,3 +231,6 @@ print(score)
 # 2. 공 던지기
 
 # 3. 점수 획득하기
+
+# 26 49
+# 26 64 -> 90
