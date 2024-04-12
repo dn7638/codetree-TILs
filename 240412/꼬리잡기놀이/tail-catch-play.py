@@ -55,6 +55,7 @@ def check_fun(x, y):
     cur_x, cur_y = x, y
     head_x, head_y = 0,0
     tail_x, tail_y = 0,0
+    flag = 0
     if base[x][y] == 1 :
         head_x, head_y = cur_x, cur_y
         flag = 1
