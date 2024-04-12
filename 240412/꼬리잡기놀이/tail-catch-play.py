@@ -45,7 +45,6 @@ move = [[-1,0],[0,1],[1,0],[0,-1]]
 # 2   4
 # 3 4 4
 
-
 def check_fun(x, y):
     # x, y에서 1을 찾아나가야함
  
@@ -195,7 +194,7 @@ for rnd in range(1,k+1):
     elif ((rnd-1) // n ) % 4 == 1:
         start_y = (rnd-1) % n + 1
         for x in range(n, 0, -1):
-            if base[x][start_y] != 0:
+            if base[x][start_y] != 0 and base[x][start_y] != 4:
                 score += check_fun(x, start_y)
                 break
         
@@ -203,7 +202,7 @@ for rnd in range(1,k+1):
     elif ((rnd-1) // n ) % 4 == 2:
         start_x = (rnd-1) % n + 1
         for y in range(n, 0, -1):
-            if base[start_x][y] != 0:
+            if base[start_x][y] != 0 and base[start_x][y] != 4:
                 score += check_fun(start_x, y)
                 break
         
@@ -211,10 +210,9 @@ for rnd in range(1,k+1):
     elif ((rnd-1) // n ) % 4 == 3:
         start_y = (rnd-1) % n + 1
         for x in range(1, n+1):
-            if base[x][start_y] != 0:
+            if base[x][start_y] != 0 and base[x][start_y] != 4:
                 score += check_fun(x, start_y)
                 break
-
 print(score)
 
     
