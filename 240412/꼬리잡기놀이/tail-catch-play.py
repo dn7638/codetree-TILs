@@ -213,11 +213,7 @@ for rnd in range(1,k+1):
             if base[x][start_y] != 0 and base[x][start_y] != 4:
                 score += check_fun(x, start_y)
                 break
-    if rnd == 9 or rnd == 10:
-        print(rnd)
-        for i in base:
-            print(i)
-        print()
+
 
 
 print(score)
