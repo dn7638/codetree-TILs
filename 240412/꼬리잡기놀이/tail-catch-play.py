@@ -200,7 +200,7 @@ for rnd in range(1,k+1):
         
     # (rnd-1) % n + 1 행 출발 좌로
     elif ((rnd-1) // n ) % 4 == 2:
-        start_x = (rnd-1) % n + 1
+        start_x = n - (rnd-1) % n
         for y in range(n, 0, -1):
             if base[start_x][y] != 0 and base[start_x][y] != 4:
                 score += check_fun(start_x, y)
@@ -208,7 +208,7 @@ for rnd in range(1,k+1):
         
     # (rnd-1) % n + 1 열 출발 아래로
     elif ((rnd-1) // n ) % 4 == 3:
-        start_y = (rnd-1) % n + 1
+        start_y = n - (rnd-1) % n
         for x in range(1, n+1):
             if base[x][start_y] != 0 and base[x][start_y] != 4:
                 score += check_fun(x, start_y)
@@ -218,6 +218,10 @@ for rnd in range(1,k+1):
 
 print(score)
 
+
+# 14 - > 15
+# 312  + 9
+# 
 # 3 1
 #   2
 
