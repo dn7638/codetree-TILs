@@ -70,23 +70,26 @@ def check_fun(x, y):
                 stack.append([cur_x,cur_y,next_x,next_y])
     result = 1
     for cur_x, cur_y, next_x, next_y in stack:
-        length = 1
-        # 2 1
+        length = 0
+        # 2 2 1 -> 3
+
+        # 2 1 -> 2
+
+        # 1 -> 1
         while True:
             before_x, before_y = cur_x, cur_y
             cur_x, cur_y = next_x, next_y
-
+            length += 1
             for dx, dy in move:
+                
                 next_x, next_y = cur_x + dx, cur_y + dy
-
                 if not innate(next_x, next_y):
                     continue
 
                 if next_x == before_x and next_y == before_y:
                     continue
 
-                if base[next_x][next_y] != 4 and base[next_x][next_y] != 0:
-                    length += 1
+                if base[next_x][next_y] != 4 and base[next_x][next_y] != 0:               
                     break
             
             # head 찾기
@@ -206,6 +209,7 @@ for rnd in range(1,k+1):
             if base[x][start_y] != 0 and base[x][start_y] != 4:
                 score += check_fun(x, start_y)
                 break
+
 
 
 print(score)
