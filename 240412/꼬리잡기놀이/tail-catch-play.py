@@ -70,6 +70,9 @@ def check_fun(x, y):
                 stack.append([cur_x,cur_y,next_x,next_y])
     result = 1
     for cur_x, cur_y, next_x, next_y in stack:
+        if len(stack) == 2 and flag == 2:
+            if base[next_x][next_y] == 1:
+                continue
         length = 0
         # 2 2 1 -> 3
 
@@ -83,6 +86,7 @@ def check_fun(x, y):
             for dx, dy in move:
                 
                 next_x, next_y = cur_x + dx, cur_y + dy
+                
                 if not innate(next_x, next_y):
                     continue
 
@@ -209,7 +213,11 @@ for rnd in range(1,k+1):
             if base[x][start_y] != 0 and base[x][start_y] != 4:
                 score += check_fun(x, start_y)
                 break
-
+    if rnd == 9 or rnd == 10:
+        print(rnd)
+        for i in base:
+            print(i)
+        print()
 
 
 print(score)
@@ -238,3 +246,7 @@ print(score)
 
 # 26 49
 # 26 64 -> 90
+
+
+# 78
+# +64
