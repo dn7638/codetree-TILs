@@ -114,6 +114,8 @@ def razer(src_x, src_y, dest_x, dest_y, time):
             next_x, next_y = dest_x + dx, dest_y + dy
             next_x = next_x % N
             next_y = next_y % M
+            if next_x == src_x and next_y == src_y:
+                continue
 
             if grid[next_x][next_y] > 0:
                 grid[next_x][next_y] -= grid[src_x][src_y] // 2
@@ -162,12 +164,12 @@ for i in range(K):
     # 2. 가장 최근에 공격한 포탑
     # 3. 행과 열의 합이 가장 큰 포탑
     # 4. 열의 값이 가장 큰 포탑
-
+    
     src_x, src_y = find_attacker()
 
     grid[src_x][src_y] += (N + M)
     attack_time[src_x][src_y] = i
-
+    
     # 2. 공격자 공격 (이 단계에서 피해 입은 포탑 정보 보관)
 
     # 공격 대상 선택
@@ -181,14 +183,14 @@ for i in range(K):
     # 2-2 포탄 공격
 
     razer(src_x, src_y, dest_x, dest_y, i)
-
+    
     # 3. 포탑 부셔짐
     # 공격력이 0 이하가 된 포탑 제거
     # 남은 포탑 1개인지 확인
 
     # 4. 포탑 정비
     repair(src_x, src_y, dest_x, dest_y, i)
-
+    
     #  공격과 무관한 포탑 공격력 1추가
 
     if is_only_one():
