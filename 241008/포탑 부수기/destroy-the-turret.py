@@ -5,12 +5,13 @@ N, M, K = map(int, input().split(' '))
 
 
 grid = [list(map(int, input().split(' '))) for _ in range(N)]
-attack_time = [[0 for _ in range(M)]for _ in range(M)]
+attack_time = [[-1 for _ in range(M)]for _ in range(N)]
 
 def print_grid():
     for i in grid:
         print(i)
 
+# print_grid()
 
 def find_attacker():
     attacker_list = []
@@ -40,7 +41,6 @@ def find_dest(src_x,src_y):
     i, j = dest_list[0][4:6]
     return (i,j)
 
-
 # 우하좌상
 move = [[0,1], [1,0], [0,-1], [-1,0]]
 around = [
@@ -48,7 +48,6 @@ around = [
     [0,-1],         [0,1],
     [1,-1], [1,0], [1,1]
 ]
-
 # 상하좌우
 # 부서진거 X
 # 가장자리 막히면 반대편
@@ -62,7 +61,6 @@ def razer(src_x,src_y,dest_x,dest_y,time):
     is_route = False
     while queue:
         cur_x, cur_y = queue.popleft()
-
         if cur_x == dest_x and cur_y == dest_y:
             is_route = True
             break
@@ -76,7 +74,6 @@ def razer(src_x,src_y,dest_x,dest_y,time):
                 queue.append((next_x,next_y))
                 visited[next_x][next_y] = True
                 before[next_x][next_y] = [cur_x, cur_y]
-
     # 루트가 있으면 레이저 공격
     if is_route:
         route = []
@@ -88,7 +85,7 @@ def razer(src_x,src_y,dest_x,dest_y,time):
             
             if cur_x == src_x and cur_y == src_y:
                 break
-    
+        
 
         for i in range(1, len(route)-1):
             x, y = route[i][:]
@@ -122,12 +119,15 @@ def razer(src_x,src_y,dest_x,dest_y,time):
         if grid[dest_x][dest_y] <= 0:
             grid[dest_x][dest_y] = 0
 
+    attack_time[cur_x][cur_y] = time
+
     
 def repair(src_x, src_y, dest_x, dest_y, time):
     for i in range(N):
         for j in range(M):
             if grid[i][j] > 0 and attack_time[i][j] != time:
                 grid[i][j] += 1
+
 
 
 def is_only_one():
@@ -153,8 +153,8 @@ for i in range(K):
     # 4. 열의 값이 가장 큰 포탑
     src_x, src_y = find_attacker()
     grid[src_x][src_y] += (N+M)
-
     #2. 공격자 공격 (이 단계에서 피해 입은 포탑 정보 보관)
+
     # 공격 대상 선택
     # 1. 공격력이 가장 높은 포탑
     # 2. 공격한지 가장 오래된 포탑
@@ -162,17 +162,19 @@ for i in range(K):
     # 4. 열 값이 가장 작은 포탑
     dest_x, dest_y = find_dest(src_x,src_y)
     
+
     #2-1 레이저 공격
     #2-2 포탄 공격
+
     razer(src_x,src_y,dest_x,dest_y, i)
-    
+
+
     #3. 포탑 부셔짐
         # 공격력이 0 이하가 된 포탑 제거
-
     #4. 포탑 정비
-    #  공격과 무관한 포탑 공격력 1추가
     repair(src_x,src_y,dest_x,dest_y,i)
-    
+    #  공격과 무관한 포탑 공격력 1추가
+
     # 남은 포탑 1개인지 확인
     if is_only_one():
         break
