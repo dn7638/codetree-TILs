@@ -176,13 +176,14 @@ for i in range(K):
 
     #3. 포탑 부셔짐
         # 공격력이 0 이하가 된 포탑 제거
+        # 남은 포탑 1개인지 확인
+    if is_only_one():
+        break
     #4. 포탑 정비
     repair(src_x,src_y,dest_x,dest_y,i)
     #  공격과 무관한 포탑 공격력 1추가
 
-    # 남은 포탑 1개인지 확인
-    if is_only_one():
-        break
+    
 
 
 answer = 0
