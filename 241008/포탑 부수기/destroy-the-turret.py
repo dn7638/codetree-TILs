@@ -11,6 +11,8 @@ def print_grid():
     for i in grid:
         print(i)
 
+
+
 # print_grid()
 
 def find_attacker():
@@ -18,8 +20,8 @@ def find_attacker():
     # append tuple (dmg, -attack_time, -(i+j), -i)
     for i in range(N):
         for j in range(M):
-            if grid[i][j] != 0:
-                attacker_list.append((grid[i][j], -attack_time[i][j], -(i+j), -i, i, j))
+            if grid[i][j] > 0:
+                attacker_list.append((grid[i][j], -attack_time[i][j], -(i+j), -j, i, j))
     
     attacker_list.sort()
     i, j = attacker_list[0][4:6]
@@ -34,8 +36,8 @@ def find_dest(src_x,src_y):
             if i == src_x and j == src_y:
                 continue
 
-            if grid[i][j] != 0:
-                dest_list.append((-grid[i][j], attack_time[i][j], (i+j), i, i, j))
+            if grid[i][j] > 0:
+                dest_list.append((-grid[i][j], attack_time[i][j], (i+j), j, i, j))
     
     dest_list.sort()
     i, j = dest_list[0][4:6]
@@ -52,8 +54,8 @@ around = [
 # 부서진거 X
 # 가장자리 막히면 반대편
 def razer(src_x,src_y,dest_x,dest_y,time):
-    visited = [[False for _ in range(M)]for _ in range(M)]
-    before = [[[-1,-1] for _ in range(M)]for _ in range(M)]
+    visited = [[False for _ in range(M)]for _ in range(N)]
+    before = [[[-1,-1] for _ in range(M)]for _ in range(N)]
     queue = deque()
     queue.append((src_x, src_y))
     visited[src_x][src_y] = True
@@ -114,7 +116,7 @@ def razer(src_x,src_y,dest_x,dest_y,time):
                     grid[next_x][next_y] = 0
 
         # 타겟
-        grid[dest_x][dest_y] -= grid[src_x][src_y] // 2
+        grid[dest_x][dest_y] -= grid[src_x][src_y]
         attack_time[dest_x][dest_y] = time
         if grid[dest_x][dest_y] <= 0:
             grid[dest_x][dest_y] = 0
@@ -125,9 +127,12 @@ def razer(src_x,src_y,dest_x,dest_y,time):
 def repair(src_x, src_y, dest_x, dest_y, time):
     for i in range(N):
         for j in range(M):
+            if i == src_x and j == src_y:
+                continue
+            if i == dest_x and j == dest_y:
+                continue
             if grid[i][j] > 0 and attack_time[i][j] != time:
                 grid[i][j] += 1
-
 
 
 def is_only_one():
