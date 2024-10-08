@@ -56,7 +56,7 @@ def razer(src_x,src_y,dest_x,dest_y,time):
     before = [[[-1,-1] for _ in range(M)]for _ in range(M)]
     queue = deque()
     queue.append((src_x, src_y))
-    visited[src_x][src_y] = False
+    visited[src_x][src_y] = True
 
     is_route = False
     while queue:
